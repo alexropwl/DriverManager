@@ -42,7 +42,7 @@ public class AcessoBD {
 		while (rs.next()) {
 
 			JOptionPane.showMessageDialog(null,
-					"CPF: "+rs.getInt(1) + " NOME "+ rs.getString(2) +"EMAIL: " + rs.getString(3));
+					"CPF: " + rs.getInt(1) + " NOME " + rs.getString(2) + "EMAIL: " + rs.getString(3));
 
 		}
 
