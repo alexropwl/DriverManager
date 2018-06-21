@@ -1,5 +1,6 @@
 package jdbc;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -55,34 +56,55 @@ public class ClienteAPP {
 		}
 
 	}
-	
+
 	/**
-	 * @throws SQLException *******************************************************************************************/
-	
-	//INSERE DADOS NO BANCO COM  A INTERFACE PREPAREDSTATEMENT
+	 * @throws SQLException
+	 *******************************************************************************************/
+
+	// INSERE DADOS NO BANCO COM A INTERFACE PREPAREDSTATEMENT
 	public static void inserirPS(int cpf, String nome, String email) {
-		
+
 		try {
-		String sql = "INSERT INTO CLIENTE VALUES(?,?,?)";
-		PreparedStatement pst = conexao.prepareStatement(sql);
-		pst.setInt(1, cpf);
-		pst.setString(2, nome);
-        pst.setString(3,email);
-        
-        pst.executeUpdate();
-		
-        conexao.commit();
+			String sql = "INSERT INTO CLIENTE VALUES(?,?,?)";
+			PreparedStatement pst = conexao.prepareStatement(sql);
+			pst.setInt(1, cpf);
+			pst.setString(2, nome);
+			pst.setString(3, email);
+
+			pst.executeUpdate();
+
+			conexao.commit();
 		}
-		
-		catch(Exception e) {
+
+		catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
-		
+
 	}
-	
-	
-	
+
+	/*********************************************************************************************/
+
+	// INSERE DADOS NO BANCO COM STORED PROCEDURE
+	public static void inserirSP(int cpf, String nome, String email) {
+
+		try {
+			String sql = "{CALL sp_inserircliente(?,?,?)}";
+			CallableStatement cs = conexao.prepareCall(sql);
+			cs.setInt(1, cpf);
+			cs.setString(2, nome);
+			cs.setString(3, email);
+
+			cs.execute();
+			conexao.commit();
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
+	}
 
 	/*********************************************************************************************/
 
@@ -220,7 +242,7 @@ public class ClienteAPP {
 					System.out.println("Informe o email");
 					email = scs.next();
 
-					inserirPS(cpf, nome, email);
+					inserirSP(cpf, nome, email);
 
 					break;
 
