@@ -2,6 +2,7 @@ package jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -54,6 +55,34 @@ public class ClienteAPP {
 		}
 
 	}
+	
+	/**
+	 * @throws SQLException *******************************************************************************************/
+	
+	//INSERE DADOS NO BANCO COM  A INTERFACE PREPAREDSTATEMENT
+	public static void inserirPS(int cpf, String nome, String email) {
+		
+		try {
+		String sql = "INSERT INTO CLIENTE VALUES(?,?,?)";
+		PreparedStatement pst = conexao.prepareStatement(sql);
+		pst.setInt(1, cpf);
+		pst.setString(2, nome);
+        pst.setString(3,email);
+        
+        pst.executeUpdate();
+		
+        conexao.commit();
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+	}
+	
+	
+	
 
 	/*********************************************************************************************/
 
@@ -191,7 +220,7 @@ public class ClienteAPP {
 					System.out.println("Informe o email");
 					email = scs.next();
 
-					inserir(cpf, nome, email);
+					inserirPS(cpf, nome, email);
 
 					break;
 
